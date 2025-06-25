@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabaseClient'
+import HeaderTop from './components/HeaderTop'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import PerksHome from './components/PerksHome'
 
 interface Product {
   id: number
@@ -38,13 +42,17 @@ export default function Home() {
   if (error) return <div className="text-red-500 text-center p-4">{error}</div>
 
   return (
+  <>
+    <HeaderTop />
+    <Header />
+    <PerksHome />
     <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Productos</h1>
+      <h1 className="text-3xl font-bold mb-4">Colección</h1>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {productos.map((prod) => (
           <li
             key={prod.id}
-            className="border p-4 rounded-lg shadow hover:shadow-md transition-shadow"
+            className="p-4 text-center cursor-pointer"
           >
             <div className="relative w-full aspect-[1/1] overflow-hidden rounded-md group mb-4">
               <img
@@ -62,12 +70,13 @@ export default function Home() {
                 />
               )}
             </div>
-
-            <h2 className="text-lg font-semibold mb-2">{prod.title}</h2>
-            <span className="text-2xl font-bold">${prod.price?.toFixed(2)}</span>
+            <span className="text-base mb-2 font-bold">{prod.title}</span><br></br>
+            <span className="text-sm">${prod.price?.toFixed(2)}</span>
           </li>
         ))}
       </ul>
     </main>
+    <Footer />
+  </>
   )
 }
