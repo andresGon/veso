@@ -6,6 +6,7 @@ import HeaderTop from './components/HeaderTop'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import PerksHome from './components/PerksHome'
+import HeroCarousel from './components/HeroCarousel'
 
 interface Product {
   id: number
@@ -45,6 +46,7 @@ export default function Home() {
   <>
     <HeaderTop />
     <Header />
+    <HeroCarousel/>
     <PerksHome />
     <main className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Colección</h1>
