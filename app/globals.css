@@ -28,3 +28,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.fill-none {
+  fill: none;
+}
+.stroke-current {
+  stroke: currentColor;
+  stroke-width: 40;
+}
