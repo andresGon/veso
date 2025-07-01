@@ -15,7 +15,7 @@ export default function HeaderTop() {
           </span>
           <span className="flex items-center gap-1">
             <MdEmail className="text-gray-400" />
-            Digizen@domain.com
+            info@veso-shop.com
           </span>
         </div>
 
@@ -28,8 +28,6 @@ export default function HeaderTop() {
 
         {/* Right */}
         <div className="flex items-center gap-4">
-          <span className="cursor-pointer">USD $ ▾</span>
-          <span className="cursor-pointer">English ▾</span>
           <div className="flex items-center gap-2 text-lg">
             <FaFacebookF className="hover:text-blue-400 cursor-pointer" />
             <FaInstagram className="hover:text-pink-400 cursor-pointer" />
