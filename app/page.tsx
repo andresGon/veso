@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { supabase } from './lib/supabaseClient'
 import HeaderTop from './components/HeaderTop'
 import Header from './components/Header'
@@ -13,6 +14,7 @@ interface Product {
   title: string
   price: number
   images: string[]
+  slug: string
 }
 
 export default function Home() {
@@ -25,7 +27,7 @@ export default function Home() {
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('id, title, price, images')
+          .select('id, title, price, images, slug')
         if (error) throw error
         setProductos(data || [])
       } catch (err) {
@@ -56,24 +58,26 @@ export default function Home() {
             key={prod.id}
             className="p-4 text-center cursor-pointer"
           >
-            <div className="relative w-full aspect-[1/1] overflow-hidden rounded-md group mb-4">
-              <img
-                src={prod.images?.[0] || './images/no_image.png'}
-                alt={prod.title}
-                className={`absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 ${
-                  prod.images?.[1] ? 'opacity-100 group-hover:opacity-0' : ''
-                }`}
-              />
-              {prod.images?.[1] && (
+            <Link href={`/products/${prod.slug}`}>
+              <div className="relative w-full aspect-[1/1] overflow-hidden rounded-md group mb-4">
                 <img
-                  src={prod.images[1]}
-                  alt={`${prod.title} hover`}
-                  className="absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 opacity-0 group-hover:opacity-100"
+                  src={prod.images?.[0] || './images/no_image.png'}
+                  alt={prod.title}
+                  className={`absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 ${
+                    prod.images?.[1] ? 'opacity-100 group-hover:opacity-0' : ''
+                  }`}
                 />
-              )}
-            </div>
-            <span className="text-base mb-2 font-bold">{prod.title}</span><br></br>
-            <span className="text-sm">${prod.price?.toFixed(2)}</span>
+                {prod.images?.[1] && (
+                  <img
+                    src={prod.images[1]}
+                    alt={`${prod.title} hover`}
+                    className="absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 opacity-0 group-hover:opacity-100"
+                  />
+                )}
+              </div>
+              <span className="text-base mb-2 font-bold">{prod.title}</span><br />
+              <span className="text-sm">${prod.price?.toFixed(2)}</span>
+            </Link>
           </li>
         ))}
       </ul>

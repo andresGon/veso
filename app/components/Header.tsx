@@ -1,5 +1,5 @@
 'use client'
-
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import {
   FaShoppingBag,
@@ -81,7 +81,9 @@ export default function Header() {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="text-5xl font-semibold">Veso</div>
+       <Link href="/">
+          <div className="text-5xl font-semibold cursor-pointer">Veso</div>
+        </Link>
 
         {/* Nav */}
         <nav className="hidden md:flex gap-6 text-sm font-medium">
