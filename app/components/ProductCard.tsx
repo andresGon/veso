@@ -1,10 +1,8 @@
-// components/ProductCard.tsx
 'use client'
 
 import Link from 'next/link'
-import { useCart } from '../hooks/useCart'
 
-interface Product {
+interface ProductCardProps {
   id: number
   title: string
   price: number
@@ -12,38 +10,29 @@ interface Product {
   slug: string
 }
 
-export default function ProductCard({ product }: { product: Product }) {
-  const { addToCart, loading } = useCart()
-
-  const handleAddToCart = () => {
-    addToCart(product.id, product.price)
-  }
-
+export default function ProductCard({ id, title, price, images, slug }: ProductCardProps) {
   return (
-    <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition">
-      <img
-        src={product.images?.[0] || '/images/no_image.png'}
-        alt={product.title}
-        className="w-full h-64 object-cover rounded-md"
-      />
-      <h2 className="text-xl font-semibold mt-4">{product.title}</h2>
-      <p className="text-gray-600 mb-4">${product.price.toFixed(2)}</p>
-
-      <div className="flex justify-between items-center">
-        <Link
-          href={`/products/${product.slug}`}
-          className="text-sm text-blue-600 underline"
-        >
-          Ver detalles
-        </Link>
-        <button
-          onClick={handleAddToCart}
-          disabled={loading}
-          className="bg-black text-white px-3 py-1 text-sm rounded hover:bg-gray-800 transition"
-        >
-          Agregar al carrito
-        </button>
-      </div>
-    </div>
+    <li key={id} className="p-4 text-center cursor-pointer">
+      <Link href={`/products/${slug}`}>
+        <div className="relative w-full aspect-[1/1] overflow-hidden rounded-md group mb-4">
+          <img
+            src={images?.[0] || './images/no_image.png'}
+            alt={title}
+            className={`absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 ${
+              images?.[1] ? 'opacity-100 group-hover:opacity-0' : ''
+            }`}
+          />
+          {images?.[1] && (
+            <img
+              src={images[1]}
+              alt={`${title} hover`}
+              className="absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 opacity-0 group-hover:opacity-100"
+            />
+          )}
+        </div>
+        <span className="text-base mb-2 font-bold">{title}</span><br />
+        <span className="text-sm">${price?.toFixed(2)}</span>
+      </Link>
+    </li>
   )
 }

@@ -88,7 +88,9 @@ export default function Header() {
         {/* Nav */}
         <nav className="hidden md:flex gap-6 text-sm font-medium">
           <div className="flex items-center gap-1 cursor-pointer hover:text-black/70">
-            Shop <FaChevronDown className="text-xs" />
+            Home 
+            {/* <FaChevronDown className="text-xs" />*/}
+            
           </div>
           <div className="flex items-center gap-1 cursor-pointer hover:text-black/70">
             Blog

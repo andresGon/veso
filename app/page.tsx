@@ -8,6 +8,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import PerksHome from './components/PerksHome'
 import HeroCarousel from './components/HeroCarousel'
+import ProductCard from './components/ProductCard'
 
 interface Product {
   id: number
@@ -15,19 +16,22 @@ interface Product {
   price: number
   images: string[]
   slug: string
+  gender?: string
 }
 
 export default function Home() {
   const [productos, setProductos] = useState<Product[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedGender, setSelectedGender] = useState<'all' | 'men' | 'women'>('all')
 
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const { data, error } = await supabase
           .from('products')
-          .select('id, title, price, images, slug')
+          .select('id, title, price, images, slug, gender')
+
         if (error) throw error
         setProductos(data || [])
       } catch (err) {
@@ -45,44 +49,54 @@ export default function Home() {
   if (error) return <div className="text-red-500 text-center p-4">{error}</div>
 
   return (
-  <>
-    <HeaderTop />
-    <Header />
-    <HeroCarousel/>
-    <PerksHome />
-    <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Colección</h1>
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {productos.map((prod) => (
-          <li
-            key={prod.id}
-            className="p-4 text-center cursor-pointer"
+    <>
+      <HeaderTop />
+      <Header />
+      <HeroCarousel />
+      <PerksHome />
+
+      <main className="container mx-auto p-4">
+        {/* Filtro de género */}
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setSelectedGender('all')}
+            className={`px-4 py-2 rounded ${
+              selectedGender === 'all' ? 'bg-black text-white' : 'bg-gray-100 text-black'
+            }`}
           >
-            <Link href={`/products/${prod.slug}`}>
-              <div className="relative w-full aspect-[1/1] overflow-hidden rounded-md group mb-4">
-                <img
-                  src={prod.images?.[0] || './images/no_image.png'}
-                  alt={prod.title}
-                  className={`absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 ${
-                    prod.images?.[1] ? 'opacity-100 group-hover:opacity-0' : ''
-                  }`}
-                />
-                {prod.images?.[1] && (
-                  <img
-                    src={prod.images[1]}
-                    alt={`${prod.title} hover`}
-                    className="absolute inset-0 w-full h-full object-cover transition duration-300 transform group-hover:scale-105 opacity-0 group-hover:opacity-100"
-                  />
-                )}
-              </div>
-              <span className="text-base mb-2 font-bold">{prod.title}</span><br />
-              <span className="text-sm">${prod.price?.toFixed(2)}</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
-    <Footer />
-  </>
+            Todos
+          </button>
+          <button
+            onClick={() => setSelectedGender('men')}
+            className={`px-4 py-2 rounded ${
+              selectedGender === 'men' ? 'bg-black text-white' : 'bg-gray-100 text-black'
+            }`}
+          >
+            Hombre
+          </button>
+          <button
+            onClick={() => setSelectedGender('women')}
+            className={`px-4 py-2 rounded ${
+              selectedGender === 'women' ? 'bg-black text-white' : 'bg-gray-100 text-black'
+            }`}
+          >
+            Mujer
+          </button>
+        </div>
+
+        {/* Lista de productos filtrada */}
+        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {productos
+            .filter((prod) =>
+              selectedGender === 'all' ? true : prod.gender === selectedGender
+            )
+            .map((prod) => (
+              <ProductCard key={prod.id} {...prod} />
+            ))}
+        </ul>
+      </main>
+
+      <Footer />
+    </>
   )
 }
