@@ -1,6 +1,8 @@
 // app/products/[slug]/page.tsx
 
-import { supabase } from '@/app/lib/supabaseClient'
+//import { supabase } from '@/app/lib/supabaseClient'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers' // Necesario para obtener la instancia de Supabase con acceso a las cookies
 import { notFound } from 'next/navigation'
 import HeaderTop from '../../components/HeaderTop'
 import Header from '../../components/Header'
@@ -30,7 +32,7 @@ export default async function ProductDetail({
 }) {
 
   const { slug } = params;
-
+  const supabase = createServerComponentClient({ cookies });
   const { data: product, error } = await supabase
     .from('products')
     .select('*')
